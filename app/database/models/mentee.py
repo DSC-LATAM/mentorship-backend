@@ -15,7 +15,7 @@ class UserModel(db.Model):
     """
 
     # Specifying database table used for UserModel
-    __tablename__ = "users"
+    __tablename__ = "mentor"
     __table_args__ = {"extend_existing": True}
 
     id = db.Column(db.Integer, primary_key=True)
