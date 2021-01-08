@@ -85,22 +85,6 @@ class MentorshipRelationDAO:
         if not mentee_user.need_mentoring:
             return messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED, HTTPStatus.BAD_REQUEST
 
-        # TODO add tests for this portion
-
-        all_mentor_relations = (
-            mentor_user.mentor_relations + mentor_user.mentee_relations
-        )
-        for relation in all_mentor_relations:
-            if relation.state == MentorshipRelationState.ACCEPTED:
-                return messages.MENTOR_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST
-
-        all_mentee_relations = (
-            mentee_user.mentor_relations + mentee_user.mentee_relations
-        )
-        for relation in all_mentee_relations:
-            if relation.state == MentorshipRelationState.ACCEPTED:
-                return messages.MENTEE_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST
-
         # All validations were checked
 
         tasks_list = TasksListModel()
@@ -204,24 +188,6 @@ class MentorshipRelationDAO:
                     messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION,
                     HTTPStatus.FORBIDDEN,
                 )
-
-        mentee = request.mentee
-        mentor = request.mentor
-
-        # If I am mentor : Check if the mentee isn't in any other relation already
-        if user_id == mentor.id:
-            mentee_requests = mentee.mentee_relations + mentee.mentor_relations
-
-            for mentee_request in mentee_requests:
-                if mentee_request.state == MentorshipRelationState.ACCEPTED:
-                    return messages.MENTEE_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST
-        # If I am mentee : Check if the mentor isn't in any other relation already
-        else:
-            mentor_requests = mentor.mentee_relations + mentor.mentor_relations
-
-            for mentor_request in mentor_requests:
-                if mentor_request.state == MentorshipRelationState.ACCEPTED:
-                    return messages.MENTOR_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST
 
         # All was checked
         request.state = MentorshipRelationState.ACCEPTED

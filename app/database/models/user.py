@@ -59,8 +59,7 @@ class UserModel(db.Model):
 
     def __init__(self, name, username, password, email, terms_and_conditions_checked):
         """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked. """
-        ## required fields
-
+        # required fields
         self.name = name
         self.username = username
         self.email = email
@@ -74,8 +73,7 @@ class UserModel(db.Model):
         self.is_email_verified = False
         self.registration_date = time.time()
 
-        ## optional fields
-
+        # optional fields
         self.need_mentoring = False
         self.available_to_mentor = False
 
